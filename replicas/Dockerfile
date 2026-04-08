@@ -1,12 +1,10 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json ./
 RUN npm install
 
 COPY . .
 
-ENV NODE_OPTIONS="--max-old-space-size=128"
-
-CMD ["node", "replicaServer.js"]
+CMD ["npm", "run", "dev"]
