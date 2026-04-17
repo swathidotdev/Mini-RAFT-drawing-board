@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Distributed Drawing Board</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── STATUS BAR ── -->
+  <header id="status-bar">
+    <div id="status-left">
+      <span id="ws-indicator" class="indicator disconnected"></span>
+      <span id="ws-label">Connecting...</span>
+    </div>
+    <div id="status-center">
+      <span id="app-title">Distributed Drawing Board</span>
+    </div>
+    <div id="status-right">
+      <span class="status-chip" id="leader-chip">Leader: —</span>
+      <span class="status-chip" id="log-chip">Log: 0</span>
+    </div>
+  </header>
+
+  <!-- ── CANVAS AREA ── -->
+  <main id="canvas-wrapper">
+    <canvas id="drawing-canvas"></canvas>
+
+    <!-- Overlay shown while reconnecting -->
+    <div id="reconnect-overlay" class="hidden">
+      <div id="reconnect-box">
+        <div class="spinner"></div>
+        <p>Leader failover in progress…</p>
+        <p class="sub">Reconnecting automatically</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── TOOLBAR ── -->
+  <aside id="toolbar">
+    <div class="tool-section">
+      <label class="tool-label">Color</label>
+      <div id="color-swatches">
+        <button class="swatch active" data-color="#1a1a2e" style="background:#1a1a2e;" title="Black"></button>
+        <button class="swatch" data-color="#e63946" style="background:#e63946;" title="Red"></button>
+        <button class="swatch" data-color="#2196f3" style="background:#2196f3;" title="Blue"></button>
+        <button class="swatch" data-color="#4caf50" style="background:#4caf50;" title="Green"></button>
+        <button class="swatch" data-color="#ff9800" style="background:#ff9800;" title="Orange"></button>
+        <button class="swatch" data-color="#9c27b0" style="background:#9c27b0;" title="Purple"></button>
+        <button class="swatch" data-color="#ffffff" style="background:#ffffff;border:1px solid #ccc;" title="White (Eraser)"></button>
+      </div>
+      <input type="color" id="custom-color" value="#1a1a2e" title="Custom color" />
+    </div>
+
+    <div class="tool-section">
+      <label class="tool-label">Size <span id="size-value">4</span>px</label>
+      <input type="range" id="brush-size" min="1" max="30" value="4" />
+    </div>
+
+    <div class="tool-section">
+      <button id="clear-btn" class="tool-btn danger">Clear Canvas</button>
+    </div>
+
+    <div class="tool-section">
+      <button id="debug-btn" class="tool-btn">Cluster Status</button>
+    </div>
+  </aside>
+
+  <!-- ── DEBUG PANEL ── -->
+  <div id="debug-panel" class="hidden">
+    <div id="debug-header">
+      <span>Cluster Status</span>
+      <button id="debug-close">✕</button>
+    </div>
+    <div id="debug-content">
+      <div class="debug-row">
+        <span class="debug-label">Gateway</span>
+        <span id="dbg-gateway">—</span>
+      </div>
+      <div class="debug-row">
+        <span class="debug-label">Leader</span>
+        <span id="dbg-leader">—</span>
+      </div>
+      <div class="debug-row">
+        <span class="debug-label">Clients</span>
+        <span id="dbg-clients">—</span>
+      </div>
+      <hr class="debug-divider" />
+      <div id="replica-statuses">
+        <p class="debug-label">Replicas</p>
+        <div id="dbg-replica1" class="replica-row">replica1 <span class="badge">—</span></div>
+        <div id="dbg-replica2" class="replica-row">replica2 <span class="badge">—</span></div>
+        <div id="dbg-replica3" class="replica-row">replica3 <span class="badge">—</span></div>
+      </div>
+      <button id="debug-refresh" class="tool-btn" style="margin-top:12px;width:100%;">Refresh</button>
+    </div>
+  </div>
+
+  <script src="canvas.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+version: "3.8"
+
+networks:
+  raft-net:
+    driver: bridge
+
+services:
+  gateway:
+    build: ../gateway
+    container_name: gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - GATEWAY_PORT=3000
+    volumes:
+      - ../gateway:/app
+      - /app/node_modules
+    networks:
+      - raft-net
+    depends_on:
+      - replica1
+      - replica2
+      - replica3
+    restart: on-failure
+
+  replica1:
+    build: ../replicas
+    container_name: replica1
+    ports:
+      - "4001:4001"
+    environment:
+      - REPLICA_ID=replica1
+      - REPLICA_PORT=4001
+      - PEERS=http://replica2:4002,http://replica3:4003
+      - GATEWAY_URL=http://gateway:3000
+    volumes:
+      - ../replicas:/app
+      - /app/node_modules
+    networks:
+      - raft-net
+    restart: on-failure
+
+  replica2:
+    build: ../replicas
+    container_name: replica2
+    ports:
+      - "4002:4002"
+    environment:
+      - REPLICA_ID=replica2
+      - REPLICA_PORT=4002
+      - PEERS=http://replica1:4001,http://replica3:4003
+      - GATEWAY_URL=http://gateway:3000
+    volumes:
+      - ../replicas:/app
+      - /app/node_modules
+    networks:
+      - raft-net
+    restart: on-failure
+
+  replica3:
+    build: ../replicas
+    container_name: replica3
+    ports:
+      - "4003:4003"
+    environment:
+      - REPLICA_ID=replica3
+      - REPLICA_PORT=4003
+      - PEERS=http://replica1:4001,http://replica2:4002
+      - GATEWAY_URL=http://gateway:3000
+    volumes:
+      - ../replicas:/app
+      - /app/node_modules
+    networks:
+      - raft-net
+    restart: on-failure
