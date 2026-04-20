@@ -41,6 +41,7 @@ const sizeValueLabel  = document.getElementById("size-value");
 const swatches        = document.querySelectorAll(".swatch");
 const customColorInput = document.getElementById("custom-color");
 const clearBtn        = document.getElementById("clear-btn");
+const eraserBtn       = document.getElementById("eraser-btn");
 const debugBtn        = document.getElementById("debug-btn");
 const debugPanel      = document.getElementById("debug-panel");
 const debugClose      = document.getElementById("debug-close");
@@ -49,12 +50,35 @@ const debugRefresh    = document.getElementById("debug-refresh");
 // ─────────────────────────────────────────────────────────────
 //  DRAWING STATE
 // ─────────────────────────────────────────────────────────────
+
 let currentColor    = "#1a1a2e";
 let currentSize     = 4;
 let isDrawing       = false;
 let lastX           = 0;
 let lastY           = 0;
 let localLogIndex   = -1;   // highest logIndex we've received/drawn
+let isEraser        = false;
+// ─────────────────────────────────────────────────────────────
+//  ERASER TOOL
+// ─────────────────────────────────────────────────────────────
+eraserBtn.addEventListener("click", () => {
+  isEraser = !isEraser;
+  if (isEraser) {
+    eraserBtn.classList.add("active");
+    // Set color to white and visually deactivate swatches
+    currentColor = "#ffffff";
+    swatches.forEach(s => s.classList.remove("active"));
+  } else {
+    eraserBtn.classList.remove("active");
+    // Restore color to last selected swatch or custom color
+    const activeSwatch = Array.from(swatches).find(s => s.classList.contains("active"));
+    if (activeSwatch) {
+      currentColor = activeSwatch.dataset.color;
+    } else {
+      currentColor = customColorInput.value;
+    }
+  }
+});
 
 const CLIENT_ID         = typeof crypto !== "undefined" && crypto.randomUUID
   ? crypto.randomUUID()
@@ -345,12 +369,16 @@ swatches.forEach(swatch => {
     swatch.classList.add("active");
     currentColor = swatch.dataset.color;
     customColorInput.value = currentColor;
+    isEraser = false;
+    eraserBtn.classList.remove("active");
   });
 });
 
 customColorInput.addEventListener("input", (e) => {
   currentColor = e.target.value;
   swatches.forEach(s => s.classList.remove("active"));
+  isEraser = false;
+  eraserBtn.classList.remove("active");
 });
 
 brushSizeInput.addEventListener("input", (e) => {

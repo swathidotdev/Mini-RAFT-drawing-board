@@ -1,3 +1,9 @@
+/* ── ERASER BUTTON ───────────────────────────────────────── */
+#eraser-btn.active {
+  background: #eee;
+  border: 2px solid #2196f3;
+  color: #2196f3;
+}
 /* ── RESET & BASE ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
