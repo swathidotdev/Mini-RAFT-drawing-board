@@ -43,8 +43,8 @@ The system consists of three main components:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/s-r-i-v-i-d-h-y-a-m/CC-mini-raft-drawing-board.git
-   cd CC-mini-raft-drawing-board
+   git clone https://github.com/swathidotdev/Mini-RAFT-drawing-board.git
+   cd Mini-RAFT-drawing-board
    ```
 
 2. Start the services using Docker Compose:
