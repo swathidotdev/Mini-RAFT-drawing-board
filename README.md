@@ -1,4 +1,4 @@
-Project: Mini-RAFT Distributed Drawing Board
+# Project: Mini-RAFT Distributed Drawing Board
 
 ## Description
 
