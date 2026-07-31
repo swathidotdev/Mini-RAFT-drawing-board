@@ -1,11 +1,5 @@
 Project: Mini-RAFT Distributed Drawing Board
 
-Team Members:
-1. Swathi M – Frontend
-2. Srujana T– Gateway
-3. Srividhya M – Replica
-4. Spoorthi V – Mini-RAFT + Docker
-
 ## Description
 
 A real-time collaborative drawing board using the Mini-RAFT consensus algorithm to ensure consistency and fault tolerance across distributed replicas. Users can draw collaboratively, and the system maintains synchronization even in the presence of network partitions or node failures.
